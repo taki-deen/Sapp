@@ -77,13 +77,42 @@ npm run dev
 ```
 /project-root
 │
-├── src/models           // MongoDB schema definitions
-├── src/routes           // API route definitions
-├── src/middlewares      // Auth checks, error handlers, validators
-├── src/utils            // Helper functions
-├── src/config           // MongoDB connection and app config
+├── src/
+│   ├── models/          // MongoDB schema definitions
+│   ├── routes/          // API route definitions
+│   ├── controllers/     // Request handlers and business logic
+│   ├── services/        // Database operations and business logic
+│   ├── middlewares/     // Auth checks, error handlers, validators
+│   ├── utils/           // Helper functions
+│   ├── config/          // MongoDB connection, Swagger, and app config
+│   ├── tests/           // Test files for routes and services
+│   ├── app.js           // Express application setup
+│   └── server.js        // Server entry point
+│
 ├── .env                 // Environment variables
+├── .env.test           // Test environment variables
+└── package.json        // Project dependencies and scripts
 ```
+
+## Project Structure Details
+
+- **models/**: Contains Mongoose schema definitions for User, Order, and ServiceType
+- **routes/**: API route definitions with Swagger documentation
+- **controllers/**: Request handlers that process incoming requests and send responses
+- **services/**: Business logic and database operations
+- **middlewares/**: Custom middleware for authentication, role checking, and validation
+- **utils/**: Helper functions and utilities
+- **config/**: Configuration files for database, Swagger, and other app settings
+- **tests/**: Test files for routes and services using Jest and Supertest
+
+## API Documentation
+
+The API documentation is available at `/api-docs` when the server is running. It includes:
+- Detailed endpoint descriptions
+- Request/response schemas
+- Authentication requirements
+- Example requests and responses
+
 
 ## Error Handling
 
