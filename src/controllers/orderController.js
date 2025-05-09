@@ -1,7 +1,14 @@
 const { validationResult } = require('express-validator');
 const orderService = require('../services/orderService');
 
-// Create a new service request
+/**
+ * Create a new service request
+ * @async
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @returns {Promise<void>}
+ * @throws {Error} When service request creation fails
+ */
 const createOrder = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -23,12 +30,18 @@ const createOrder = async (req, res) => {
     }
 };
 
-// Get all service requests
+/**
+ * Get all service requests based on user role
+ * @async
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @returns {Promise<void>}
+ * @throws {Error} When fetching service requests fails
+ */
 const getAllOrders = async (req, res) => {
     try {
         const filter = req.user.role === 'customer' 
             ? { customerId: req.user._id }
-            
             : req.user.role === 'worker'
                 ? { $or: [{ workerId: req.user._id }, { status: 'pending' }] }
                 : {};
@@ -40,7 +53,14 @@ const getAllOrders = async (req, res) => {
     }
 };
 
-// Get a single service request
+/**
+ * Get a single service request by ID
+ * @async
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @returns {Promise<void>}
+ * @throws {Error} When fetching service request fails
+ */
 const getOrderById = async (req, res) => {
     try {
         const order = await orderService.getOrderById(req.params.id);
@@ -60,7 +80,14 @@ const getOrderById = async (req, res) => {
     }
 };
 
-// Update service request status
+/**
+ * Update service request status
+ * @async
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @returns {Promise<void>}
+ * @throws {Error} When updating status fails
+ */
 const updateOrderStatus = async (req, res) => {
     try {
         const { status } = req.body;
@@ -71,7 +98,14 @@ const updateOrderStatus = async (req, res) => {
     }
 };
 
-// Assign a worker to a request
+/**
+ * Assign a worker to a request
+ * @async
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @returns {Promise<void>}
+ * @throws {Error} When assigning worker fails
+ */
 const assignWorker = async (req, res) => {
     try {
         const order = await orderService.assignWorker(req.params.id, req.user._id);
@@ -81,7 +115,14 @@ const assignWorker = async (req, res) => {
     }
 };
 
-// Rate worker after completion
+/**
+ * Rate worker after completion
+ * @async
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @returns {Promise<void>}
+ * @throws {Error} When rating worker fails
+ */
 const rateWorker = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -95,7 +136,14 @@ const rateWorker = async (req, res) => {
     }
 };
 
-// Delete a service request
+/**
+ * Delete a service request
+ * @async
+ * @param {import('express').Request} req - Express request object
+ * @param {import('express').Response} res - Express response object
+ * @returns {Promise<void>}
+ * @throws {Error} When deleting service request fails
+ */
 const deleteOrder = async (req, res) => {
     try {
         await orderService.deleteOrder(req.params.id, req.user);

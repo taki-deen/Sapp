@@ -5,7 +5,40 @@ const serviceTypeController = require('../controllers/serviceTypeController');
 
 const router = express.Router();
 
-// Create service type (Admin only)
+/**
+ * @swagger
+ * /api/service-types:
+ *   post:
+ *     summary: Create a new service type (Admin only)
+ *     tags: [Service Types]
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - description
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Service type created successfully
+ *       400:
+ *         description: Validation error or service type already exists
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Admin access required
+ *       500:
+ *         description: Server error
+ */
 router.post('/',
     auth,
     checkRole(['admin']),
@@ -16,13 +49,106 @@ router.post('/',
     serviceTypeController.createServiceType
 );
 
-// Get all service types
+/**
+ * @swagger
+ * /api/service-types:
+ *   get:
+ *     summary: Get all active service types
+ *     tags: [Service Types]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of service types
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                   name:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *                   isActive:
+ *                     type: boolean
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
+ */
 router.get('/', auth, serviceTypeController.getAllServiceTypes);
 
-// Update service type (Admin only)
+/**
+ * @swagger
+ * /api/service-types/{id}:
+ *   put:
+ *     summary: Update a service type (Admin only)
+ *     tags: [Service Types]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *               isActive:
+ *                 type: boolean
+ *     responses:
+ *       200:
+ *         description: Service type updated successfully
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Admin access required
+ *       404:
+ *         description: Service type not found
+ *       500:
+ *         description: Server error
+ */
 router.put('/:id', auth, checkRole(['admin']), serviceTypeController.updateServiceType);
 
-// Delete service type (Admin only)
+/**
+ * @swagger
+ * /api/service-types/{id}:
+ *   delete:
+ *     summary: Delete a service type (Admin only)
+ *     tags: [Service Types]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Service type deleted successfully
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Admin access required
+ *       404:
+ *         description: Service type not found
+ *       500:
+ *         description: Server error
+ */
 router.delete('/:id', auth, checkRole(['admin']), serviceTypeController.deleteServiceType);
 
 module.exports = router; 

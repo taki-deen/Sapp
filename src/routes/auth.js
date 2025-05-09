@@ -5,7 +5,51 @@ const authController = require('../controllers/authController');
 
 const router = express.Router();
 
-// Register new user
+/**
+ * @swagger
+ * /api/auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - email
+ *               - password
+ *               - phone
+ *               - role
+ *               - location
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *                 minLength: 6
+ *               phone:
+ *                 type: string
+ *               role:
+ *                 type: string
+ *                 enum: [customer, worker]
+ *               location:
+ *                 type: string
+ *               specialization:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *       400:
+ *         description: Validation error or user already exists
+ *       500:
+ *         description: Server error
+ */
 router.post('/register',
     [
         body('name').trim().notEmpty().withMessage('Name is required'),
@@ -19,7 +63,35 @@ router.post('/register',
     authController.register
 );
 
-// Login user
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: Login user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       401:
+ *         description: Invalid credentials or account inactive
+ *       500:
+ *         description: Server error
+ */
 router.post('/login',
     [
         body('email').isEmail().withMessage('Please enter a valid email'),
@@ -28,7 +100,22 @@ router.post('/login',
     authController.login
 );
 
-// Get current user
+/**
+ * @swagger
+ * /api/auth/me:
+ *   get:
+ *     summary: Get current user profile
+ *     tags: [Auth]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User profile retrieved successfully
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
+ */
 router.get('/me', auth, authController.getCurrentUser);
 
 module.exports = router; 

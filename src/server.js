@@ -2,7 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const path = require('path');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpecs = require('./config/swagger');
 
 // Import routes (to be created)
 const authRoutes = require('./routes/auth');
@@ -17,6 +18,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Swagger Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+
 // Database connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/service-management', {
     useNewUrlParser: true,
@@ -26,8 +30,8 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/service-m
 .catch(err => console.error('MongoDB connection error:', err));
 
 // Routes
-app.get('/', (req, res)=>{
-    res.send("Hello World");
+app.get('/', (req, res) => {
+    res.redirect('/api-docs');
 });
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
@@ -48,4 +52,5 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port http://localhost:${PORT}`);
+    console.log(`Swagger documentation available at http://localhost:${PORT}/api-docs`);
 }); 
