@@ -92,6 +92,7 @@ router.post('/login',
 
             // Verify password
             const isMatch = await user.comparePassword(password);
+            console.log(isMatch);
             if (!isMatch) {
                 return res.status(401).json({ message: 'Invalid credentials' });
             }

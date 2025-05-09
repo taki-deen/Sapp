@@ -5,10 +5,10 @@ const cors = require('cors');
 const path = require('path');
 
 // Import routes (to be created)
-const authRoutes = require('./src/routes/auth');
-const userRoutes = require('./src/routes/users');
-const serviceRequestRoutes = require('./src/routes/serviceRequests');
-const serviceTypeRoutes = require('./src/routes/serviceTypes');
+const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/users');
+const serviceRequestRoutes = require('./routes/serviceRequests');
+const serviceTypeRoutes = require('./routes/serviceTypes');
 
 const app = express();
 
@@ -26,8 +26,11 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/service-m
 .catch(err => console.error('MongoDB connection error:', err));
 
 // Routes
-app.use('/api/auth', authRoutes);
+app.get('/', (req, res)=>{
+    res.send("Hello World");
+});
 app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/service-requests', serviceRequestRoutes);
 app.use('/api/service-types', serviceTypeRoutes);
 
@@ -44,5 +47,5 @@ app.use((err, req, res, next) => {
 // Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port http://localhost:${PORT}`);
 }); 

@@ -34,15 +34,20 @@ const userSchema = new mongoose.Schema({
     },
     specialization: {
         type: String,
-        required: function() {
+        required: function () {
             return this.role === 'worker';
         }
     },
-    ratings: [{
-        type: Number,
-        min: 1,
-        max: 5
-    }],
+    ratings: {
+        type: [Number],
+        validate: {
+            validator: function (arr) {
+                return arr.every(num => num >= 1 && num <= 5);
+            },
+            message: 'Ratings must be between 1 and 5'
+        },
+        default: []
+    },
     isActive: {
         type: Boolean,
         default: true
@@ -52,29 +57,27 @@ const userSchema = new mongoose.Schema({
 });
 
 // Hash password before saving
-userSchema.pre('save', async function(next) {
+userSchema.pre('save', async function (next) {
     if (!this.isModified('password')) return next();
-    
     try {
-        const salt = await bcrypt.genSalt(10);
+        const salt = await bcrypt.genSalt(12);
         this.password = await bcrypt.hash(this.password, salt);
         next();
-    } catch (error) {
-        next(error);
+    } catch (err) {
+        next(err);
     }
 });
 
 // Method to compare password
-userSchema.methods.comparePassword = async function(candidatePassword) {
+userSchema.methods.comparePassword = function (candidatePassword) {
     return bcrypt.compare(candidatePassword, this.password);
 };
 
 // Method to calculate average rating
-userSchema.methods.getAverageRating = function() {
-    if (this.ratings.length === 0) return 0;
-    return this.ratings.reduce((a, b) => a + b, 0) / this.ratings.length;
+userSchema.methods.getAverageRating = function () {
+    if (!this.ratings.length) return 0;
+    const sum = this.ratings.reduce((acc, rating) => acc + rating, 0);
+    return parseFloat((sum / this.ratings.length).toFixed(2));
 };
 
-const User = mongoose.model('User', userSchema);
-
-module.exports = User; 
+module.exports = mongoose.model('User', userSchema);
