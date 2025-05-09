@@ -7,7 +7,7 @@ const path = require('path');
 // Import routes (to be created)
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
-const serviceRequestRoutes = require('./routes/serviceRequests');
+const ordersRoutes = require('./routes/orders');
 const serviceTypeRoutes = require('./routes/serviceTypes');
 
 const app = express();
@@ -31,7 +31,7 @@ app.get('/', (req, res)=>{
 });
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/service-requests', serviceRequestRoutes);
+app.use('/api/orders', ordersRoutes);
 app.use('/api/service-types', serviceTypeRoutes);
 
 // Error handling middleware

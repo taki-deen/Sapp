@@ -4,11 +4,11 @@ A RESTful API for managing service requests between customers and service worker
 
 ## Features
 
-- JWT-based user authentication
+- User authentication (JWT-based)
 - Role-based access control (Customer, Worker, Admin)
-- Service request creation, assignment, and management
-- Service type management (Admin only)
-- Worker rating system
+- Service request management
+- Service type management
+- Rating system for workers
 
 ## Prerequisites
 
@@ -19,42 +19,70 @@ A RESTful API for managing service requests between customers and service worker
 ## Installation
 
 1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd service-management-system
-   ```
+```bash
+git clone https://github.com/taki-deen/Sapp.git
+cd service-management-system
+```
 
 2. Install dependencies:
-   ```bash
-   npm install
-   ```
+```bash
+npm install
+```
 
 3. Create a `.env` file in the root directory with the following variables:
-   ```
-   PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/service-management
-   JWT_SECRET=your_jwt_secret_key_here
-   NODE_ENV=development
-   ```
+```
+PORT=5000
+MONGODB_URI=mongodb://localhost:27017/service-management
+JWT_SECRET=your_jwt_secret_key_here
+NODE_ENV=development
+```
 
 4. Start the development server:
-   ```bash
-   npm run dev
-   ```
+```bash
+npm run dev
+```
+
+## API Endpoints
+
+### Authentication
+
+- `POST /api/auth/register` - Register a new user
+- `POST /api/auth/login` - Login user
+- `GET /api/auth/me` - Get current user profile
+
+### Users
+
+- `GET /api/users` - Get all users (Admin only)
+- `GET /api/users/:id` - Get user by ID
+- `PUT /api/users/:id` - Update user
+- `DELETE /api/users/:id` - Delete user (Admin only)
+
+### Service Requests
+
+- `POST /api/orders` - Create new service request
+- `GET /api/orders` - Get all service requests
+- `GET /api/orders/:id` - Get service request by ID
+- `PUT /api/orders/:id` - Update service request
+- `DELETE /api/orders/:id` - Delete service request
+
+### Service Types
+
+- `POST /api/service-types` - Create new service type (Admin only)
+- `GET /api/service-types` - Get all service types
+- `PUT /api/service-types/:id` - Update service type (Admin only)
+- `DELETE /api/service-types/:id` - Delete service type (Admin only)
 
 ## Project Structure
 
 ```
 /project-root
 │
-├── /controllers       // Logic for each route
-├── /models           // MongoDB schema definitions
-├── /routes           // API route definitions
-├── /middlewares      // Auth checks, error handlers, validators
-├── /utils            // Helper functions
-├── /config           // MongoDB connection and app config
-├── .env              // Environment variables
-├── server.js         // Application entry point
+├── src/models           // MongoDB schema definitions
+├── src/routes           // API route definitions
+├── src/middlewares      // Auth checks, error handlers, validators
+├── src/utils            // Helper functions
+├── src/config           // MongoDB connection and app config
+├── .env                 // Environment variables
 ```
 
 ## Error Handling
@@ -76,15 +104,3 @@ All protected routes require a JWT token in the Authorization header:
 ```
 Authorization: Bearer <token>
 ```
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a new Pull Request
-
-## License
-
-This project is licensed under the MIT License. 

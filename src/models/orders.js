@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const serviceRequestSchema = new mongoose.Schema({
+const ordersSchema = new mongoose.Schema({
     customerId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -47,10 +47,10 @@ const serviceRequestSchema = new mongoose.Schema({
 });
 
 // Index for efficient querying
-serviceRequestSchema.index({ customerId: 1, status: 1 });
-serviceRequestSchema.index({ workerId: 1, status: 1 });
-serviceRequestSchema.index({ serviceType: 1, status: 1 });
+ordersSchema.index({ customerId: 1, status: 1 });
+ordersSchema.index({ workerId: 1, status: 1 });
+ordersSchema.index({ serviceType: 1, status: 1 });
 
-const ServiceRequest = mongoose.model('ServiceRequest', serviceRequestSchema);
+const orders = mongoose.model('orders', ordersSchema);
 
-module.exports = ServiceRequest; 
+module.exports = orders; 

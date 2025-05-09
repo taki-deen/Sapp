@@ -1,6 +1,6 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
-const ServiceRequest = require('../models/ServiceRequest');
+const orders = require('../models/orders');
 const { auth, checkRole } = require('../middlewares/auth');
 
 const router = express.Router();
@@ -22,7 +22,7 @@ router.post('/',
         }
         try {
             const { serviceType, description, location, scheduledTime, notes } = req.body;
-            const serviceRequest = new ServiceRequest({
+            const orders = new orders({
                 customerId: req.user._id,
                 serviceType,
                 description,
@@ -30,8 +30,8 @@ router.post('/',
                 scheduledTime,
                 notes
             });
-            await serviceRequest.save();
-            res.status(201).json(serviceRequest);
+            await orders.save();
+            res.status(201).json(orders);
         } catch (err) {
             res.status(500).json({ message: 'Error creating service request', error: err.message });
         }
@@ -40,6 +40,7 @@ router.post('/',
 
 // Get all service requests (role-based)
 router.get('/', auth, async (req, res) => {
+    console.log(req);
     try {
         let filter = {};
         if (req.user.role === 'customer') {
@@ -50,7 +51,7 @@ router.get('/', auth, async (req, res) => {
                 { status: 'pending' }
             ];
         }
-        const requests = await ServiceRequest.find(filter)
+        const requests = await orders.find(filter)
             .populate('customerId', 'name email')
             .populate('workerId', 'name email')
             .populate('serviceType', 'name');
@@ -63,7 +64,7 @@ router.get('/', auth, async (req, res) => {
 // Get a single service request by ID
 router.get('/:id', auth, async (req, res) => {
     try {
-        const request = await ServiceRequest.findById(req.params.id)
+        const request = await orders.findById(req.params.id)
             .populate('customerId', 'name email')
             .populate('workerId', 'name email')
             .populate('serviceType', 'name');
@@ -86,7 +87,7 @@ router.get('/:id', auth, async (req, res) => {
 router.put('/:id/status', auth, checkRole(['worker', 'admin']), async (req, res) => {
     try {
         const { status } = req.body;
-        const request = await ServiceRequest.findById(req.params.id);
+        const request = await orders.findById(req.params.id);
         if (!request) return res.status(404).json({ message: 'Service request not found' });
         // Only assigned worker or admin can update
         if (
@@ -106,7 +107,7 @@ router.put('/:id/status', auth, checkRole(['worker', 'admin']), async (req, res)
 // Assign a worker to a request (Worker accepts job)
 router.put('/:id/assign', auth, checkRole(['worker']), async (req, res) => {
     try {
-        const request = await ServiceRequest.findById(req.params.id);
+        const request = await orders.findById(req.params.id);
         if (!request) return res.status(404).json({ message: 'Service request not found' });
         if (request.status !== 'pending') {
             return res.status(400).json({ message: 'Job is not available for assignment' });
@@ -129,7 +130,7 @@ router.put('/:id/rate', auth, checkRole(['customer']), [
         return res.status(400).json({ errors: errors.array() });
     }
     try {
-        const request = await ServiceRequest.findById(req.params.id);
+        const request = await orders.findById(req.params.id);
         if (!request) return res.status(404).json({ message: 'Service request not found' });
         if (!request.customerId.equals(req.user._id)) {
             return res.status(403).json({ message: 'Access denied' });
@@ -153,7 +154,7 @@ router.put('/:id/rate', auth, checkRole(['customer']), [
 // Delete a service request (Admin or owner)
 router.delete('/:id', auth, async (req, res) => {
     try {
-        const request = await ServiceRequest.findById(req.params.id);
+        const request = await orders.findById(req.params.id);
         if (!request) return res.status(404).json({ message: 'Service request not found' });
         if (
             req.user.role !== 'admin' &&

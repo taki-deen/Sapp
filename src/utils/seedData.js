@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
 const ServiceType = require('../models/ServiceType');
-const ServiceRequest = require('../models/ServiceRequest');
+const orders = require('../models/orders');
 require('dotenv').config();
 
 const seedData = async () => {
@@ -13,7 +13,7 @@ const seedData = async () => {
     await Promise.all([
       User.deleteMany({}),
       ServiceType.deleteMany({}),
-      ServiceRequest.deleteMany({})
+      orders.deleteMany({})
     ]);
     console.log('Cleared existing data');
 
@@ -79,7 +79,7 @@ const seedData = async () => {
       { name: 'Carpentry', description: 'Wood and furniture services', isActive: true }
     ]);
 
-    await ServiceRequest.create([
+    await orders.create([
       {
         customerId: customers[0]._id,
         workerId: workers[0]._id,
