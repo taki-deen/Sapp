@@ -1,8 +1,9 @@
-const express = require("express");
-const { body } = require("express-validator");
-const { checkRole } = require("../middlewares/auth");
-const userController = require("../controllers/userController");
-const { uploadImageMiddleware } = require("../middlewares/imageUpload");
+import express from "express";
+import { body } from "express-validator";
+import { checkRole } from "../middlewares/auth.js";
+import userController from "../controllers/userController.js";
+import { uploadImageMiddleware } from "../middlewares/imageUpload.js";
+
 const router = express.Router();
 
 /**
@@ -230,4 +231,4 @@ router.delete("/:id", checkRole(["admin"]), userController.deleteUser);
 router.post("/upload-image", uploadImageMiddleware, userController.uploadingProfileImage);
 
 //ADD ROUTE HERE 
-module.exports = router;
+export default router;

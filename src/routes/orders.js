@@ -1,7 +1,7 @@
-const express = require("express");
-const { body } = require("express-validator");
-const { checkRole } = require("../middlewares/auth");
-const orderController = require("../controllers/orderController");
+import express from "express";
+import { body } from "express-validator";
+import { checkRole } from "../middlewares/auth.js";
+import orderController from "../controllers/orderController.js";
 
 const router = express.Router();
 
@@ -320,4 +320,4 @@ router.put(
  */
 router.delete("/:id", orderController.deleteOrder);
 
-module.exports = router;
+export default router;

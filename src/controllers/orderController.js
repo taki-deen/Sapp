@@ -1,5 +1,5 @@
-const { validationResult } = require("express-validator");
-const orderService = require("../services/orderService");
+import { validationResult } from "express-validator";
+import orderService from "../services/orderService.js";
 
 /**
  * Create a new service request
@@ -189,7 +189,7 @@ const deleteOrder = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   createOrder,
   getAllOrders,
   getOrderById,

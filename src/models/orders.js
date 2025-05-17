@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const ordersSchema = new mongoose.Schema({
     customerId: {
@@ -51,6 +51,4 @@ ordersSchema.index({ customerId: 1, status: 1 });
 ordersSchema.index({ workerId: 1, status: 1 });
 ordersSchema.index({ serviceType: 1, status: 1 });
 
-const orders = mongoose.model('orders', ordersSchema);
-
-module.exports = orders; 
+export default mongoose.model('Order', ordersSchema); 

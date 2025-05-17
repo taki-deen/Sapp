@@ -1,4 +1,4 @@
-const User = require("../models/User");
+import User from "../models/User.js";
 
 // Get all users
 const getAllUsers = async (filter) => {
@@ -41,7 +41,7 @@ const getCurrentUser = async (userId) => {
   return await User.findById(userId).select("-password");
 };
 
-module.exports = {
+export default {
   getAllUsers,
   getCurrentUser,
   getUserById,

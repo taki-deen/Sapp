@@ -1,7 +1,7 @@
-require('dotenv').config();
-const mongoose = require('mongoose');
-const cors = require('cors');
-const app = require('./app');
+import 'dotenv/config';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import app from './app.js';
 
 // Middleware
 app.use(cors());

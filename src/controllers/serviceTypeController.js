@@ -1,5 +1,5 @@
-const { validationResult } = require('express-validator');
-const serviceTypeService = require('../services/serviceTypeService');
+import { validationResult } from 'express-validator';
+import serviceTypeService from '../services/serviceTypeService.js';
 
 // Create service type
 const createServiceType = async (req, res) => {
@@ -51,7 +51,7 @@ const deleteServiceType = async (req, res) => {
     }
 };
 
-module.exports = {
+export default {
     createServiceType,
     getAllServiceTypes,
     updateServiceType,

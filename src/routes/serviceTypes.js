@@ -1,7 +1,7 @@
-const express = require('express');
-const { body } = require('express-validator');
-const {  checkRole } = require('../middlewares/auth');
-const serviceTypeController = require('../controllers/serviceTypeController');
+import express from 'express';
+import { body } from 'express-validator';
+import { checkRole } from '../middlewares/auth.js';
+import serviceTypeController from '../controllers/serviceTypeController.js';
 
 const router = express.Router();
 
@@ -151,4 +151,4 @@ router.put('/:id',  checkRole(['admin']), serviceTypeController.updateServiceTyp
  */
 router.delete('/:id',  checkRole(['admin']), serviceTypeController.deleteServiceType);
 
-module.exports = router; 
+export default router; 

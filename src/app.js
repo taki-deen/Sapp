@@ -1,12 +1,16 @@
-const express = require('express');
-const path = require('path');
-const swaggerUi = require('swagger-ui-express');
-const swaggerSpecs = require('./config/swagger');
-const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/users');
-const orderRoutes = require('./routes/orders');
-const serviceTypeRoutes = require('./routes/serviceTypes');
-const { auth } = require('./middlewares/auth');
+import express from 'express';
+import path from 'path';
+import swaggerUi from 'swagger-ui-express';
+import swaggerSpecs from './config/swagger.js';
+import authRoutes from './routes/auth.js';
+import userRoutes from './routes/users.js';
+import orderRoutes from './routes/orders.js';
+import serviceTypeRoutes from './routes/serviceTypes.js';
+import { auth } from './middlewares/auth.js';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -39,4 +43,4 @@ app.use((err, req, res, next) => {
     });
 });
 
-module.exports = app;
+export default app;

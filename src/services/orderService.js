@@ -1,6 +1,6 @@
-const Order = require("../models/orders");
-const User = require("../models/User");
-const ServiceType = require("../models/ServiceType");
+import Order from "../models/orders.js";
+import User from "../models/User.js";
+import ServiceType from "../models/ServiceType.js";
 
 // Create a new order
 const createOrder = async (orderData) => {
@@ -115,7 +115,7 @@ const deleteOrder = async (orderId, user) => {
   await order.deleteOne();
 };
 
-module.exports = {
+export default {
   createOrder,
   getAllOrders,
   getOrderById,

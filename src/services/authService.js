@@ -1,5 +1,5 @@
-const User = require('../models/User');
-const { generateToken } = require('../utils/jwt');
+import User from '../models/User.js';
+import { generateToken } from '../utils/jwt.js';
 
 // Register new user
 const register = async (userData) => {
@@ -77,7 +77,7 @@ const getCurrentUserInfo = async ()=>{
     await User.findOne({ _id: decoded.userId, isActive: true });
 }
 
-module.exports = {
+export default {
     register,
     login,
     getCurrentUserInfo

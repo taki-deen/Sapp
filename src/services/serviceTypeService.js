@@ -1,4 +1,4 @@
-const ServiceType = require('../models/ServiceType');
+import ServiceType from '../models/ServiceType.js';
 
 // Create service type
 const createServiceType = async (serviceTypeData) => {
@@ -32,7 +32,7 @@ const deleteServiceType = async (id) => {
     if (!deleted) throw new Error('Service type not found');
 };
 
-module.exports = {
+export default {
     createServiceType,
     getAllServiceTypes,
     updateServiceType,

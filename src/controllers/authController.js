@@ -1,5 +1,5 @@
-const { validationResult } = require('express-validator');
-const authService = require('../services/authService');
+import { validationResult } from 'express-validator';
+import authService from '../services/authService.js';
 
 // Register new user
 const register = async (req, res) => {
@@ -42,9 +42,7 @@ const login = async (req, res) => {
     }
 };
 
-
-
-module.exports = {
+export default {
     register,
     login,
 }; 

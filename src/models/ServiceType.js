@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const serviceTypeSchema = new mongoose.Schema({
     name: {
@@ -24,6 +24,4 @@ const serviceTypeSchema = new mongoose.Schema({
 serviceTypeSchema.index({ name: 1 });
 serviceTypeSchema.index({ isActive: 1 });
 
-const ServiceType = mongoose.model('ServiceType', serviceTypeSchema);
-
-module.exports = ServiceType; 
+export default mongoose.model('ServiceType', serviceTypeSchema); 

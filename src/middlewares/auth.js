@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const UserService = require('../services/userService');
+import jwt from 'jsonwebtoken';
+import UserService from '../services/userService.js';
 
 const auth = async (req, res, next) => {
     try {
@@ -36,7 +36,7 @@ const checkRole = (roles) => {
     };
 };
 
-module.exports = {
+export {
     auth,
     checkRole
 }; 

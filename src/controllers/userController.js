@@ -1,5 +1,5 @@
-const { validationResult } = require("express-validator");
-const userService = require("../services/userService");
+import { validationResult } from "express-validator";
+import userService from "../services/userService.js";
 
 // Get all users
 const getAllUsers = async (req, res) => {
@@ -73,6 +73,7 @@ const deleteUser = async (req, res) => {
       .json({ message: "Error deleting user", error: err.message });
   }
 };
+
 // Get current user
 const getCurrentUser = async (req, res) => {
   try {
@@ -84,7 +85,7 @@ const getCurrentUser = async (req, res) => {
   }
 };
 
- const uploadingProfileImage = async (req, res) => {
+const uploadingProfileImage = async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ message: "No image file provided" });
@@ -105,12 +106,12 @@ const getCurrentUser = async (req, res) => {
     });
   }
 }
-module.exports = {
+
+export default {
   getAllUsers,
   getCurrentUser,
   getUserById,
   updateUser,
   deleteUser,
   uploadingProfileImage,
-  
 };
