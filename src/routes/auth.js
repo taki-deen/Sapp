@@ -100,22 +100,5 @@ router.post('/login',
     authController.login
 );
 
-/**
- * @swagger
- * /api/auth/me:
- *   get:
- *     summary: Get current user profile
- *     tags: [Auth]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: User profile retrieved successfully
- *       401:
- *         description: Unauthorized
- *       500:
- *         description: Server error
- */
-router.get('/me', auth, authController.getCurrentUser);
 
 module.exports = router; 

@@ -1,7 +1,7 @@
-const express = require('express');
-const { body } = require('express-validator');
-const { auth, checkRole } = require('../middlewares/auth');
-const orderController = require('../controllers/orderController');
+const express = require("express");
+const { body } = require("express-validator");
+const { checkRole } = require("../middlewares/auth");
+const orderController = require("../controllers/orderController");
 
 const router = express.Router();
 
@@ -95,16 +95,25 @@ const router = express.Router();
  *       403:
  *         description: Forbidden - Customer access only
  */
-router.post('/',
-    auth,
-    checkRole(['customer']),
-    [
-        body('serviceType').notEmpty().withMessage('Service type is required'),
-        body('description').notEmpty().withMessage('Description is required'),
-        body('location').notEmpty().withMessage('Location is required'),
-        body('scheduledTime').notEmpty().withMessage('Scheduled time is required')
-    ],
-    orderController.createOrder
+router.post(
+  "/",
+  checkRole(["customer"]),
+  [
+    body("serviceType").notEmpty().withMessage("Service type is required"),
+    body("description").notEmpty().withMessage("Description is required"),
+    body("location").notEmpty().withMessage("Location is required"),
+    body("scheduledTime").notEmpty().withMessage("Scheduled time is required"),
+    body("notes")
+      .optional()
+      .custom((value) => {
+        const wordCount = value.trim().split(/\s+/).length;
+        if (wordCount > 50) {
+          throw new Error("Notes must not exceed 50 words");
+        }
+        return true;
+      }),
+  ],
+  orderController.createOrder
 );
 
 /**
@@ -115,9 +124,25 @@ router.post('/',
  *     tags: [Orders]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: location
+ *         schema:
+ *           type: string
+ *         description: Filter orders by location (e.g., city name)
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *         description: Filter orders by status ( accepted)
+ *       - in: query
+ *         name: serviceTypeName
+ *         schema:
+ *           type: string
+ *         description: Filter orders by serviceTypeName ( Plumbing)
  *     responses:
  *       200:
- *         description: List of orders based on user role
+ *         description: List of orders based on user role and optional location
  *         content:
  *           application/json:
  *             schema:
@@ -127,7 +152,7 @@ router.post('/',
  *       401:
  *         description: Unauthorized
  */
-router.get('/', auth, orderController.getAllOrders);
+router.get("/", orderController.getAllOrders);
 
 /**
  * @swagger
@@ -155,7 +180,7 @@ router.get('/', auth, orderController.getAllOrders);
  *       404:
  *         description: Order not found
  */
-router.get('/:id', auth, orderController.getOrderById);
+router.get("/:id", orderController.getOrderById);
 
 /**
  * @swagger
@@ -193,7 +218,11 @@ router.get('/:id', auth, orderController.getOrderById);
  *       404:
  *         description: Order not found
  */
-router.put('/:id/status', auth, checkRole(['worker', 'admin']), orderController.updateOrderStatus);
+router.put(
+  "/:id/status",
+  checkRole(["worker", "admin"]),
+  orderController.updateOrderStatus
+);
 
 /**
  * @swagger
@@ -219,7 +248,7 @@ router.put('/:id/status', auth, checkRole(['worker', 'admin']), orderController.
  *       404:
  *         description: Order not found
  */
-router.put('/:id/assign', auth, checkRole(['worker']), orderController.assignWorker);
+router.put("/:id/assign", checkRole(["worker"]), orderController.assignWorker);
 
 /**
  * @swagger
@@ -258,9 +287,12 @@ router.put('/:id/assign', auth, checkRole(['worker']), orderController.assignWor
  *       404:
  *         description: Order not found
  */
-router.put('/:id/rate', auth, checkRole(['customer']), [
-    body('rating').isInt({ min: 1, max: 5 }).withMessage('Rating must be 1-5')
-], orderController.rateWorker);
+router.put(
+  "/:id/rate",
+  checkRole(["customer"]),
+  [body("rating").isInt({ min: 1, max: 5 }).withMessage("Rating must be 1-5")],
+  orderController.rateWorker
+);
 
 /**
  * @swagger
@@ -286,6 +318,6 @@ router.put('/:id/rate', auth, checkRole(['customer']), [
  *       404:
  *         description: Order not found
  */
-router.delete('/:id', auth, orderController.deleteOrder);
+router.delete("/:id", orderController.deleteOrder);
 
-module.exports = router; 
+module.exports = router;

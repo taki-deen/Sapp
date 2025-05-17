@@ -73,13 +73,12 @@ const login = async (email, password) => {
     };
 };
 
-// Get current user
-const getCurrentUser = async (userId) => {
-    return await User.findById(userId).select('-password');
-};
+const getCurrentUserInfo = async ()=>{
+    await User.findOne({ _id: decoded.userId, isActive: true });
+}
 
 module.exports = {
     register,
     login,
-    getCurrentUser
+    getCurrentUserInfo
 }; 

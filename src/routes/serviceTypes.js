@@ -1,6 +1,6 @@
 const express = require('express');
 const { body } = require('express-validator');
-const { auth, checkRole } = require('../middlewares/auth');
+const {  checkRole } = require('../middlewares/auth');
 const serviceTypeController = require('../controllers/serviceTypeController');
 
 const router = express.Router();
@@ -40,7 +40,7 @@ const router = express.Router();
  *         description: Server error
  */
 router.post('/',
-    auth,
+    
     checkRole(['admin']),
     [
         body('name').notEmpty().withMessage('Name is required'),
@@ -80,7 +80,7 @@ router.post('/',
  *       500:
  *         description: Server error
  */
-router.get('/', auth, serviceTypeController.getAllServiceTypes);
+router.get('/',  serviceTypeController.getAllServiceTypes);
 
 /**
  * @swagger
@@ -121,7 +121,7 @@ router.get('/', auth, serviceTypeController.getAllServiceTypes);
  *       500:
  *         description: Server error
  */
-router.put('/:id', auth, checkRole(['admin']), serviceTypeController.updateServiceType);
+router.put('/:id',  checkRole(['admin']), serviceTypeController.updateServiceType);
 
 /**
  * @swagger
@@ -149,6 +149,6 @@ router.put('/:id', auth, checkRole(['admin']), serviceTypeController.updateServi
  *       500:
  *         description: Server error
  */
-router.delete('/:id', auth, checkRole(['admin']), serviceTypeController.deleteServiceType);
+router.delete('/:id',  checkRole(['admin']), serviceTypeController.deleteServiceType);
 
 module.exports = router; 

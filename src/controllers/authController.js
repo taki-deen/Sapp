@@ -42,18 +42,9 @@ const login = async (req, res) => {
     }
 };
 
-// Get current user
-const getCurrentUser = async (req, res) => {
-    try {
-        const user = await authService.getCurrentUser(req.user._id);
-        res.json(user);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching user data', error: error.message });
-    }
-};
+
 
 module.exports = {
     register,
     login,
-    getCurrentUser
 }; 

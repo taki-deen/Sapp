@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
+const UserService = require('../services/userService');
 
 const auth = async (req, res, next) => {
     try {
@@ -10,7 +10,7 @@ const auth = async (req, res, next) => {
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findOne({ _id: decoded.userId, isActive: true });
+        const user = await UserService.getCurrentUser( decoded.userId)
 
         if (!user) {
             return res.status(401).json({ message: 'User not found or inactive' });
