@@ -1,6 +1,7 @@
 {
   "name": "service-management-system",
   "version": "1.0.0",
+  "author": "taqi'deen",
   "description": "A service management system for connecting customers with service workers",
   "main": "server.js",
   "scripts": {
